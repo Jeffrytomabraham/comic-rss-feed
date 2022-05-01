@@ -5,6 +5,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +24,10 @@ public class RssFeedServiceImpl implements RssFeedService {
 	@Autowired
 	private XkcdHandler xkcdHandler;
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(RssFeedServiceImpl.class);
+
 	public List<RssFeedResponse> getComicFeeds() {
+		LOGGER.info("Inside RssFeedServiceImpl.getComicFeeds()..");
 		List<RssFeedResponse> feedResponses = new ArrayList<>();
 		generateFeedBurnerDetails(feedResponses);
 		generateXkcdDetails(feedResponses);
@@ -32,10 +37,12 @@ public class RssFeedServiceImpl implements RssFeedService {
 	}
 	
 	private void generateFeedBurnerDetails(List<RssFeedResponse> feedResponses) {
+		LOGGER.info("Generate feed burner details.");
 		feedResponses.addAll(feedBurnerHandler.getFeedBurnerDetails());
 	}
 	
 	private void generateXkcdDetails(List<RssFeedResponse> feedResponses) {
+		LOGGER.info("Generate XKCD details.");
 		feedResponses.addAll(xkcdHandler.getXkcdDetails());
 	}
 	

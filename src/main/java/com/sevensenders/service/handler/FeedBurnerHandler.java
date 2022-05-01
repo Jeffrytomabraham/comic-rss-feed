@@ -10,6 +10,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -20,8 +22,11 @@ public class FeedBurnerHandler {
 
 	@Value("${feedburner.url}")
 	private String feedburnerUrl;
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(FeedBurnerHandler.class);
 	
 	public List<RssFeedResponse> getFeedBurnerDetails() {
+		LOGGER.info("Inside FeedBurnerHandler.getFeedBurnerDetails()..");
 		List<RssFeedResponse> feedResponses = new ArrayList<>();
 		Document doc = null;
 		try {
@@ -29,8 +34,10 @@ public class FeedBurnerHandler {
 			Elements itemElements = doc.select("item");
 			if(itemElements!=null)
 				parseHtmlDetails(feedResponses, itemElements);
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException ex) {
+			LOGGER.error("IOException while connecting URL {}",ex.getMessage(),ex);
+		} catch (Exception ex) {
+			LOGGER.error("Exception in FeedBurnerHandler.getFeedBurnerDetails() {}",ex.getMessage(),ex);
 		}
 		return feedResponses;
 	}

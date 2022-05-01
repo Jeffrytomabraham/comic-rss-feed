@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -21,8 +23,11 @@ public class XkcdHandler {
 
 	@Value("${xkcd.comics.urltemplate}")
 	private String xkcdUrlTemplate;
-	
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(XkcdHandler.class);
+
 	public List<RssFeedResponse> getXkcdDetails(){
+		LOGGER.info("Inside XkcdHandler.getXkcdDetails()..");
 		List<RssFeedResponse> feedResponses = new ArrayList<>();
 		try {
 			IntStream.rangeClosed(0, 9).forEach(in -> {
@@ -34,8 +39,8 @@ public class XkcdHandler {
 				JsonObject jsonData = getJsonObjectFromXkcd(urlString);
 				populateComicDetails(jsonData,feedResponses);
 			});
-		} catch(Exception e) {
-			e.printStackTrace();
+		} catch(Exception ex) {
+			LOGGER.error("Exception in XkcdHandler.getXkcdDetails() {}",ex.getMessage(),ex);
 		}
 		return feedResponses;
 	}
@@ -69,13 +74,13 @@ public class XkcdHandler {
 	      reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
 	      jsonData = new Gson().fromJson(reader, JsonObject.class);
 	    } catch(Exception ex){
-	    	
+			LOGGER.error("Exception in XkcdHandler.getJsonObjectFromXkcd() {}",ex.getMessage(),ex);
 	    }finally {
 	      try {
 	    	if(reader!=null)
 	    		reader.close();
-		  } catch (IOException e) {
-			e.printStackTrace();
+		  } catch (IOException ex) {
+			LOGGER.error("IOException in XkcdHandler finally() {}",ex.getMessage(),ex);
 		  }
 	    }
 	    return jsonData;
