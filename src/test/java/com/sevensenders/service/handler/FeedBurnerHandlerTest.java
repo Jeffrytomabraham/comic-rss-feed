@@ -23,8 +23,8 @@ class FeedBurnerHandlerTest {
         ReflectionTestUtils.setField(feedBurnerHandlerUnderTest,"feedburnerUrl","http://feeds.feedburner.com/PoorlyDrawnLines");
         final List<RssFeedResponse> result = feedBurnerHandlerUnderTest.getFeedBurnerDetails();
         assertThat(result).isNotNull();
-        assertThat(result.isEmpty()).isFalse();
-        assertThat(result.size()).isEqualTo(10);
+        assertThat(result).isNotEmpty();
+        assertThat(result).hasSize(10);
         assertThat(result.get(0).getPublishingDate()).isNotNull();
         assertThat(result.get(0).getImageUrl()).isNotNull();
         assertThat(result.get(0).getTitle()).isNotNull();

@@ -23,8 +23,8 @@ class XkcdHandlerTest {
         ReflectionTestUtils.setField(xkcdHandlerUnderTest,"xkcdUrlTemplate","https://xkcd.com/%sinfo.0.json");
         final List<RssFeedResponse> result = xkcdHandlerUnderTest.getXkcdDetails();
         assertThat(result).isNotNull();
-        assertThat(result.isEmpty()).isFalse();
-        assertThat(result.size()).isEqualTo(10);
+        assertThat(result).isNotEmpty();
+        assertThat(result).hasSize(10);
         assertThat(result.get(0).getPublishingDate()).isNotNull();
         assertThat(result.get(0).getImageUrl()).isNotNull();
         assertThat(result.get(0).getTitle()).isNotNull();
