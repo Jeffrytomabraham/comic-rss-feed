@@ -3,7 +3,7 @@ package com.sevensenders.service.handler;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +66,7 @@ public class XkcdHandler {
 		JsonObject jsonData = null;
 	    try {
 	      URL url = new URL(urlString);
-	      reader = new InputStreamReader(url.openStream(), Charset.forName("UTF-8"));
+	      reader = new InputStreamReader(url.openStream(), StandardCharsets.UTF_8);
 	      jsonData = new Gson().fromJson(reader, JsonObject.class);
 	    } catch(Exception ex){
 	    	

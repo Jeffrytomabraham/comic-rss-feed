@@ -20,16 +20,15 @@ public class RssFeedServiceImpl implements RssFeedService {
 	private FeedBurnerHandler feedBurnerHandler;
 	
 	@Autowired
-	private XkcdHandler XkcdHandler;
+	private XkcdHandler xkcdHandler;
 
 	public List<RssFeedResponse> getComicFeeds() {
 		List<RssFeedResponse> feedResponses = new ArrayList<>();
 		generateFeedBurnerDetails(feedResponses);
 		generateXkcdDetails(feedResponses);
-		List<RssFeedResponse> sortedResponse = feedResponses.stream()
+		return feedResponses.stream()
 				.sorted(Comparator.comparing(RssFeedResponse::getPublishingDate).reversed())
 			.collect(Collectors.toList());
-		return sortedResponse;
 	}
 	
 	private void generateFeedBurnerDetails(List<RssFeedResponse> feedResponses) {
@@ -37,7 +36,7 @@ public class RssFeedServiceImpl implements RssFeedService {
 	}
 	
 	private void generateXkcdDetails(List<RssFeedResponse> feedResponses) {
-		feedResponses.addAll(XkcdHandler.getXkcdDetails());
+		feedResponses.addAll(xkcdHandler.getXkcdDetails());
 	}
 	
 }
